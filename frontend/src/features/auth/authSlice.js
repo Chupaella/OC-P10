@@ -5,7 +5,7 @@ import { getProfileApi, updateUsernameApi } from "../../services/userApi";
 const TOKEN_KEY = "argentbank_token";
 
 const initialState = {
-  token: localStorage.getItem(TOKEN_KEY) || null,
+  token: sessionStorage.getItem(TOKEN_KEY) || null,
   user: null,
   status: "idle",
   error: null,
@@ -73,7 +73,7 @@ const authSlice = createSlice({
       state.user = null;
       state.status = "idle";
       state.error = null;
-      localStorage.removeItem(TOKEN_KEY);
+      sessionStorage.removeItem(TOKEN_KEY);
     },
     clearError(state) {
       state.error = null;
@@ -88,7 +88,7 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.token = action.payload;
-        localStorage.setItem(TOKEN_KEY, action.payload);
+        sessionStorage.setItem(TOKEN_KEY, action.payload);
       })
       .addCase(login.rejected, (state, action) => {
         state.status = "failed";

@@ -39,38 +39,46 @@ const Login = () => {
   };
 
   return (
-    <section>
-      <h1>Connexion</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="username"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+    <section className="login">
+      <h1 className="login-title">Connexion</h1>
+      <form className="login-form" onSubmit={handleSubmit}>
+        <div className="login-fields">
+          <div className="input-wrapper">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="username"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="input-wrapper">
+            <label htmlFor="password">Mot de passe</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
         </div>
-        <div>
-          <label htmlFor="password">Mot de passe</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+        <div className="login-actions">
+          <button className="sign-in-button" type="submit" disabled={isLoading}>
+            {isLoading ? "Connexion..." : "Se connecter"}
+          </button>
         </div>
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? "Connexion..." : "Se connecter"}
-        </button>
       </form>
-      {error && <p role="alert">{error}</p>}
+      {error && (
+        <p role="alert" className="login-error">
+          {error}
+        </p>
+      )}
     </section>
   );
 };

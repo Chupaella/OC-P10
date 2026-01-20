@@ -2,40 +2,65 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { logout } from "../features/auth/authSlice";
 
-const Layout = () => {
+export default function Layout() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   const token = useAppSelector((state) => state.auth.token);
+  const userName = useAppSelector((state) => state.auth.user?.userName);
   const isAuthenticated = Boolean(token);
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/");
+    navigate("/", { replace: true });
   };
 
   return (
-    <div>
-      <header>
-        <nav>
-          <NavLink to="/">Home</NavLink>
-          {" | "}
-          {!isAuthenticated && <NavLink to="/login">Login</NavLink>}
-          {isAuthenticated && (
+    <>
+      <nav className="main-nav">
+        <NavLink className="main-nav-logo" to="/">
+          <img
+            className="main-nav-logo-image"
+            src="/img/argentBankLogo.png"
+            alt="Argent Bank Logo"
+          />
+          <h1 className="sr-only">Argent Bank</h1>
+        </NavLink>
+
+        <div>
+          {!isAuthenticated ? (
+            <NavLink className="main-nav-item" to="/login">
+              <i className="fa fa-user-circle" aria-hidden="true"></i>
+              Sign In
+            </NavLink>
+          ) : (
             <>
-              <NavLink to="/profile">Profile</NavLink>
-              {" "}
-              <button type="button" onClick={handleLogout}>
-                Logout
+              <NavLink className="main-nav-item" to="/profile">
+                <i className="fa fa-user-circle" aria-hidden="true"></i>
+                {userName ? ` ${userName}` : " Profile"}
+              </NavLink>
+
+              <button
+                type="button"
+                className="main-nav-item main-nav-item-button"
+                onClick={handleLogout}
+              >
+                <i className="fa fa-sign-out" aria-hidden="true"></i> Sign Out
               </button>
             </>
           )}
-        </nav>
-      </header>
-      <main>
+        </div>
+      </nav>
+
+      <main className="app-main">
         <Outlet />
       </main>
-    </div>
-  );
-};
 
-export default Layout;
+      <footer className="footer">
+        <p className="footer-text">
+          Copyright {new Date().getFullYear()} Argent Bank
+        </p>
+      </footer>
+    </>
+  );
+}

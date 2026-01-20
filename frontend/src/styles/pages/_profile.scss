@@ -1,0 +1,74 @@
+.header {
+  color: #2c3e50;
+  margin-bottom: 2rem;
+}
+
+.profile-loading {
+  color: #2c3e50;
+  text-align: center;
+  padding: 2rem;
+}
+
+.profile-edit-form {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.profile-edit-fields {
+  width: min(520px, 92vw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-edit-fields .input-wrapper {
+  width: 100%;
+  max-width: 420px;
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-edit-fields .input-wrapper label {
+  color: #2c3e50;
+  font-weight: 500;
+  text-align: right;
+}
+
+.profile-edit-fields .input-wrapper input {
+  width: 100%;
+  height: 34px;
+  padding: 6px 10px;
+  border: 1px solid #c7cdd3;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.profile-edit-fields .input-wrapper input:disabled {
+  background: #e9ecef;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+.profile-edit-actions {
+  width: 100%;
+  max-width: 420px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.profile-edit-actions .edit-button {
+  padding: 10px 0;
+  font-size: 15px;
+}
+
+.profile-error {
+  color: #c0392b;
+  text-align: center;
+  margin-top: 8px;
+}
