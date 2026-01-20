@@ -1,0 +1,321 @@
+swagger: "2.0"
+info:
+  title: Bank Argent API documentation - Transactions
+  description: Proposed endpoints for transaction viewing and editable transaction metadata.
+  version: "2.0.0"
+  termsOfService: "http://swagger.io/terms/"
+host: localhost:3001
+basePath: /api/v1
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /user/{userId}/transactions:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: List monthly transactions grouped by account
+      description: Returns all transactions for the requested month, grouped by account.
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          type: string
+          description: User identifier.
+        - in: query
+          name: month
+          required: false
+          type: string
+          description: Month to query in YYYY-MM format. Defaults to current month.
+      responses:
+        "200":
+          description: Transactions grouped by account.
+          schema:
+            $ref: "#/definitions/TransactionsByAccountResponse"
+        "401":
+          description: Unauthorized.
+          schema:
+            $ref: "#/definitions/ApiError"
+        "404":
+          description: User not found.
+          schema:
+            $ref: "#/definitions/ApiError"
+        "500":
+          description: Internal Server Error.
+          schema:
+            $ref: "#/definitions/ApiError"
+
+  /accounts/{accountId}/transactions/{transactionId}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: Get transaction details
+      description: Returns detailed information for a single transaction.
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          type: string
+          description: Account identifier.
+        - in: path
+          name: transactionId
+          required: true
+          type: string
+          description: Transaction identifier.
+      responses:
+        "200":
+          description: Transaction details.
+          schema:
+            $ref: "#/definitions/TransactionDetailsResponse"
+        "401":
+          description: Unauthorized.
+          schema:
+            $ref: "#/definitions/ApiError"
+        "404":
+          description: Transaction not found.
+          schema:
+            $ref: "#/definitions/ApiError"
+        "500":
+          description: Internal Server Error.
+          schema:
+            $ref: "#/definitions/ApiError"
+    patch:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: Update editable transaction fields
+      description: Updates category, note, or transaction type for a transaction.
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          type: string
+          description: Account identifier.
+        - in: path
+          name: transactionId
+          required: true
+          type: string
+          description: Transaction identifier.
+        - in: body
+          name: body
+          required: true
+          description: Editable transaction fields to update.
+          schema:
+            $ref: "#/definitions/TransactionUpdate"
+      responses:
+        "200":
+          description: Transaction updated.
+          schema:
+            $ref: "#/definitions/TransactionDetailsResponse"
+        "400":
+          description: Invalid payload.
+          schema:
+            $ref: "#/definitions/ApiError"
+        "401":
+          description: Unauthorized.
+          schema:
+            $ref: "#/definitions/ApiError"
+        "404":
+          description: Transaction not found.
+          schema:
+            $ref: "#/definitions/ApiError"
+        "500":
+          description: Internal Server Error.
+          schema:
+            $ref: "#/definitions/ApiError"
+
+  /accounts/{accountId}/transactions/{transactionId}/note:
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: Delete a transaction note
+      description: Removes the note attached to a transaction.
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          type: string
+          description: Account identifier.
+        - in: path
+          name: transactionId
+          required: true
+          type: string
+          description: Transaction identifier.
+      responses:
+        "204":
+          description: Note removed.
+        "401":
+          description: Unauthorized.
+          schema:
+            $ref: "#/definitions/ApiError"
+        "404":
+          description: Transaction not found.
+          schema:
+            $ref: "#/definitions/ApiError"
+        "500":
+          description: Internal Server Error.
+          schema:
+            $ref: "#/definitions/ApiError"
+
+  /accounts/{accountId}/transactions/{transactionId}/category:
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: Delete a transaction category
+      description: Clears the category attached to a transaction.
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          type: string
+          description: Account identifier.
+        - in: path
+          name: transactionId
+          required: true
+          type: string
+          description: Transaction identifier.
+      responses:
+        "204":
+          description: Category removed.
+        "401":
+          description: Unauthorized.
+          schema:
+            $ref: "#/definitions/ApiError"
+        "404":
+          description: Transaction not found.
+          schema:
+            $ref: "#/definitions/ApiError"
+        "500":
+          description: Internal Server Error.
+          schema:
+            $ref: "#/definitions/ApiError"
+
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+
+definitions:
+  TransactionsByAccountResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          month:
+            type: string
+            example: "2020-02"
+          accounts:
+            type: array
+            items:
+              $ref: "#/definitions/AccountTransactionGroup"
+  AccountTransactionGroup:
+    type: object
+    properties:
+      accountId:
+        type: string
+      accountName:
+        type: string
+      accountType:
+        type: string
+      balance:
+        type: number
+        format: float
+      transactions:
+        type: array
+        items:
+          $ref: "#/definitions/TransactionSummary"
+  TransactionSummary:
+    type: object
+    properties:
+      id:
+        type: string
+      date:
+        type: string
+        format: date
+      description:
+        type: string
+      amount:
+        type: number
+        format: float
+      balance:
+        type: number
+        format: float
+      transactionType:
+        type: string
+        example: Electronic
+      category:
+        type: string
+        example: Food
+      note:
+        type: string
+        example: lorem ipsum
+  TransactionDetailsResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        $ref: "#/definitions/TransactionDetails"
+  TransactionDetails:
+    type: object
+    properties:
+      id:
+        type: string
+      accountId:
+        type: string
+      date:
+        type: string
+        format: date
+      description:
+        type: string
+      amount:
+        type: number
+        format: float
+      balance:
+        type: number
+        format: float
+      transactionType:
+        type: string
+      category:
+        type: string
+      note:
+        type: string
+  TransactionUpdate:
+    type: object
+    properties:
+      transactionType:
+        type: string
+        description: Editable transaction type.
+      category:
+        type: string
+        description: Editable category. Use empty string to clear.
+      note:
+        type: string
+        description: Editable note. Use empty string to clear.
+  ApiError:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
