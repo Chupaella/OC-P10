@@ -64,23 +64,45 @@ L’objectif était de développer une application bancaire front-end complète 
 ---
 
 ## Installation et lancement
-Aucune installation particulière n’est nécessaire..
+Ce projet est structuré sous forme de **monorepo**, contenant un backend et un frontend React..
 
-1. Cloner le dépôt
-2. Installer les dépendances avec `npm install`
-3. Lancer le backend fourni
-4. Lancer l’application avec `npm start`
+### Prérequis
+- Node.js
+- Git
+- MongoDB *(ou Docker si une image MongoDB est utilisée)*
+
+### Démarrer le backend
+bash
+cd backend
+npm install
+npm run dev:server
+API disponible sur http://localhost:3001
+Base API : http://localhost:3001/api/v1
+
+Démarrer le frontend
+bash
+Copier le code
+cd ../frontend
+npm install
+npm run dev
+Application disponible sur http://localhost:5173
+
+Swagger
+Le fichier backend/swagger.yaml peut être ouvert dans Swagger Editor :
+https://editor.swagger.io/
 
 ---
 
-## Points forts
-- Architecture React / Redux claire et robuste
-- Gestion propre de l’authentification
-- Actions asynchrones maîtrisées
-- Code structuré et maintenable
-- Application évolutive et réaliste
+### Points forts
+
+Architecture React / Redux claire et robuste
+Gestion propre de l’authentification
+Actions asynchrones maîtrisées
+Code structuré et maintenable
+Application évolutive et réaliste
 
 ---
 
-## Liens
-- Dépôt GitHub : https://github.com/Chupaella/OC-P10
+### Liens
+
+Dépôt GitHub : https://github.com/Chupaella/OC-P10
