@@ -72,19 +72,23 @@ Ce projet est structuré sous forme de **monorepo**, contenant un backend et un 
 - MongoDB *(ou Docker si une image MongoDB est utilisée)*
 
 ### Démarrer le backend
+```
 bash
 cd backend
 npm install
 npm run dev:server
+```
 API disponible sur http://localhost:3001
 Base API : http://localhost:3001/api/v1
 
 Démarrer le frontend
+```
 bash
 Copier le code
 cd ../frontend
 npm install
 npm run dev
+```
 Application disponible sur http://localhost:5173
 
 Swagger
