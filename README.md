@@ -84,7 +84,6 @@ Base API : http://localhost:3001/api/v1
 Démarrer le frontend
 ```
 bash
-Copier le code
 cd ../frontend
 npm install
 npm run dev
