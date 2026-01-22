@@ -26,6 +26,7 @@ Front disponible sur http://localhost:5173
 
 ## Swagger
 - Le fichier `backend/swagger.yaml` peut etre ouvert dans Swagger Editor.
+https://editor.swagger.io/
 
 ## Notes OC
 - Identifiants de test: voir la base de donnees seed (scripts backend).
