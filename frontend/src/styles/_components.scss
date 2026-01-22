@@ -150,6 +150,12 @@
 
 .chevron-icon {
   display: block;
+  transition: transform 0.15s ease;
+}
+
+.transaction-button--icon:hover .chevron-icon,
+.transaction-button--icon:focus-visible .chevron-icon {
+  transform: translateX(4px);
 }
 
 @media (min-width: 720px) {
