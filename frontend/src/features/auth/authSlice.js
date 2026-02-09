@@ -19,12 +19,12 @@ export const login = createAsyncThunk(
       const token = data?.body?.token || data?.token;
 
       if (!token) {
-        throw new Error("Token manquant dans la reponse.");
+        throw new Error("Missing token in response.");
       }
 
       return token;
     } catch (error) {
-      return rejectWithValue(error.message || "Echec de la connexion.");
+      return rejectWithValue(error.message || "Login failed.");
     }
   }
 );
@@ -35,13 +35,13 @@ export const fetchProfile = createAsyncThunk(
     try {
       const token = getState().auth.token;
       if (!token) {
-        throw new Error("Token manquant.");
+        throw new Error("Missing token.");
       }
 
       const data = await getProfileApi(token);
       return data?.body || data;
     } catch (error) {
-      return rejectWithValue(error.message || "Echec du chargement du profil.");
+      return rejectWithValue(error.message || "Failed to load profile.");
     }
   }
 );
@@ -52,14 +52,14 @@ export const updateUsername = createAsyncThunk(
     try {
       const token = getState().auth.token;
       if (!token) {
-        throw new Error("Token manquant.");
+        throw new Error("Missing token.");
       }
 
       await updateUsernameApi(userName, token);
       await dispatch(fetchProfile()).unwrap();
       return userName;
     } catch (error) {
-      return rejectWithValue(error.message || "Echec de la mise a jour.");
+      return rejectWithValue(error.message || "Failed to update profile.");
     }
   }
 );
@@ -92,7 +92,7 @@ const authSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.payload || "Echec de la connexion.";
+        state.error = action.payload || "Login failed.";
       })
       .addCase(fetchProfile.pending, (state) => {
         state.status = "loading";
@@ -104,7 +104,7 @@ const authSlice = createSlice({
       })
       .addCase(fetchProfile.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.payload || "Echec du chargement du profil.";
+        state.error = action.payload || "Failed to load profile.";
       })
       .addCase(updateUsername.pending, (state) => {
         state.status = "loading";
@@ -115,7 +115,7 @@ const authSlice = createSlice({
       })
       .addCase(updateUsername.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.payload || "Echec de la mise a jour.";
+        state.error = action.payload || "Failed to update profile.";
       });
   },
 });

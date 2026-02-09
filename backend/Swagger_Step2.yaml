@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   title: Bank Argent API documentation - Transactions
-  description: Proposed endpoints for transaction viewing and editable transaction metadata.
+  description: Endpoints for transaction viewing and editable transaction metadata (account-scoped).
   version: "2.0.0"
   termsOfService: "http://swagger.io/terms/"
 host: localhost:3001
@@ -12,21 +12,25 @@ consumes:
   - application/json
 produces:
   - application/json
+
 paths:
-  /user/{userId}/transactions:
+
+  /accounts/{accountId}/transactions:
     get:
       security:
         - Bearer: []
       tags:
         - Transactions Module
-      summary: List monthly transactions grouped by account
-      description: Returns all transactions for the requested month, grouped by account.
+      summary: List monthly transactions for an account
+      description: >
+        Returns all transactions for the requested month for the specified account.
+        Access is authorized via Bearer token (account must belong to authenticated user).
       parameters:
         - in: path
-          name: userId
+          name: accountId
           required: true
           type: string
-          description: User identifier.
+          description: Account identifier.
         - in: query
           name: month
           required: false
@@ -34,15 +38,19 @@ paths:
           description: Month to query in YYYY-MM format. Defaults to current month.
       responses:
         "200":
-          description: Transactions grouped by account.
+          description: Monthly transactions for the account.
           schema:
-            $ref: "#/definitions/TransactionsByAccountResponse"
+            $ref: "#/definitions/AccountTransactionsResponse"
         "401":
           description: Unauthorized.
           schema:
             $ref: "#/definitions/ApiError"
+        "403":
+          description: Forbidden (account not owned by authenticated user).
+          schema:
+            $ref: "#/definitions/ApiError"
         "404":
-          description: User not found.
+          description: Account not found.
           schema:
             $ref: "#/definitions/ApiError"
         "500":
@@ -78,6 +86,10 @@ paths:
           description: Unauthorized.
           schema:
             $ref: "#/definitions/ApiError"
+        "403":
+          description: Forbidden (account not owned by authenticated user).
+          schema:
+            $ref: "#/definitions/ApiError"
         "404":
           description: Transaction not found.
           schema:
@@ -86,13 +98,14 @@ paths:
           description: Internal Server Error.
           schema:
             $ref: "#/definitions/ApiError"
+
     patch:
       security:
         - Bearer: []
       tags:
         - Transactions Module
       summary: Update editable transaction fields
-      description: Updates category, note, or transaction type for a transaction.
+      description: Updates category or note for a transaction.
       parameters:
         - in: path
           name: accountId
@@ -121,6 +134,10 @@ paths:
             $ref: "#/definitions/ApiError"
         "401":
           description: Unauthorized.
+          schema:
+            $ref: "#/definitions/ApiError"
+        "403":
+          description: Forbidden (account not owned by authenticated user).
           schema:
             $ref: "#/definitions/ApiError"
         "404":
@@ -158,6 +175,10 @@ paths:
           description: Unauthorized.
           schema:
             $ref: "#/definitions/ApiError"
+        "403":
+          description: Forbidden (account not owned by authenticated user).
+          schema:
+            $ref: "#/definitions/ApiError"
         "404":
           description: Transaction not found.
           schema:
@@ -193,6 +214,10 @@ paths:
           description: Unauthorized.
           schema:
             $ref: "#/definitions/ApiError"
+        "403":
+          description: Forbidden (account not owned by authenticated user).
+          schema:
+            $ref: "#/definitions/ApiError"
         "404":
           description: Transaction not found.
           schema:
@@ -209,7 +234,8 @@ securityDefinitions:
     in: header
 
 definitions:
-  TransactionsByAccountResponse:
+
+  AccountTransactionsResponse:
     type: object
     properties:
       status:
@@ -222,11 +248,14 @@ definitions:
           month:
             type: string
             example: "2020-02"
-          accounts:
+          account:
+            $ref: "#/definitions/AccountInfo"
+          transactions:
             type: array
             items:
-              $ref: "#/definitions/AccountTransactionGroup"
-  AccountTransactionGroup:
+              $ref: "#/definitions/TransactionSummary"
+
+  AccountInfo:
     type: object
     properties:
       accountId:
@@ -238,10 +267,7 @@ definitions:
       balance:
         type: number
         format: float
-      transactions:
-        type: array
-        items:
-          $ref: "#/definitions/TransactionSummary"
+
   TransactionSummary:
     type: object
     properties:
@@ -267,6 +293,7 @@ definitions:
       note:
         type: string
         example: lorem ipsum
+
   TransactionDetailsResponse:
     type: object
     properties:
@@ -276,6 +303,7 @@ definitions:
         type: string
       body:
         $ref: "#/definitions/TransactionDetails"
+
   TransactionDetails:
     type: object
     properties:
@@ -300,18 +328,17 @@ definitions:
         type: string
       note:
         type: string
+
   TransactionUpdate:
     type: object
     properties:
-      transactionType:
-        type: string
-        description: Editable transaction type.
       category:
         type: string
         description: Editable category. Use empty string to clear.
       note:
         type: string
         description: Editable note. Use empty string to clear.
+
   ApiError:
     type: object
     properties:

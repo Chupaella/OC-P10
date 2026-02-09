@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { fetchProfile, updateUsername } from "../features/auth/authSlice";
+import Button from "../components/Button";
 
-// Comptes placeholder – Phase 1
+// Accounts placeholder - Phase 1
 const ACCOUNTS_PLACEHOLDER = [
   {
     id: "checking",
@@ -60,7 +61,7 @@ export default function Profile() {
     return (
       <main className="main">
         <p className="profile-loading">
-          {isLoading ? "Chargement..." : "Profil indisponible."}
+          {isLoading ? "Loading..." : "Profile unavailable."}
         </p>
       </main>
     );
@@ -71,13 +72,13 @@ export default function Profile() {
       {/* Header */}
       <div className="header">
         {!isEditing ? (
-          <button
+          <Button
             type="button"
             className="edit-button"
             onClick={() => setIsEditing(true)}
           >
             Edit username
-          </button>
+          </Button>
         ) : (
           <form className="profile-edit-form" onSubmit={handleSubmit}>
             <div className="profile-edit-fields">
@@ -104,21 +105,21 @@ export default function Profile() {
               </div>
 
               <div className="profile-edit-actions">
-                <button
+                <Button
                   className="edit-button"
                   type="submit"
                   disabled={isLoading}
                 >
                   {isLoading ? "Saving..." : "Save"}
-                </button>
-                <button
+                </Button>
+                <Button
                   className="edit-button"
                   type="button"
                   onClick={handleCancel}
                   disabled={isLoading}
                 >
                   Cancel
-                </button>
+                </Button>
               </div>
 
               {error && (
@@ -144,10 +145,10 @@ export default function Profile() {
             </p>
           </div>
           <div className="account-content-wrapper cta">
-            <button
+            <Button
               className="transaction-button transaction-button--icon"
               type="button"
-              onClick={() => alert("Transactions – Phase 2")}
+              onClick={() => alert("Transactions - Phase 2")}
             >
               <span className="sr-only">View transactions</span>
               <svg
@@ -166,7 +167,7 @@ export default function Profile() {
                   strokeLinecap="square"
                 />
               </svg>
-            </button>
+            </Button>
           </div>
         </section>
       ))}

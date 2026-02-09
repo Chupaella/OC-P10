@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { clearError, fetchProfile, login } from "../features/auth/authSlice";
+import Button from "../components/Button";
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -40,7 +41,7 @@ const Login = () => {
 
   return (
     <section className="login">
-      <h1 className="login-title">Connexion</h1>
+      <h1 className="login-title">Sign in</h1>
       <form className="login-form" onSubmit={handleSubmit}>
         <div className="login-fields">
           <div className="input-wrapper">
@@ -56,7 +57,7 @@ const Login = () => {
             />
           </div>
           <div className="input-wrapper">
-            <label htmlFor="password">Mot de passe</label>
+            <label htmlFor="password">Password</label>
             <input
               id="password"
               name="password"
@@ -69,9 +70,9 @@ const Login = () => {
           </div>
         </div>
         <div className="login-actions">
-          <button className="sign-in-button" type="submit" disabled={isLoading}>
-            {isLoading ? "Connexion..." : "Se connecter"}
-          </button>
+          <Button className="sign-in-button" type="submit" disabled={isLoading}>
+            {isLoading ? "Signing in..." : "Sign in"}
+          </Button>
         </div>
       </form>
       {error && (
