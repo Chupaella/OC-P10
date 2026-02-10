@@ -30,35 +30,22 @@ export default function Header() {
       <div>
         {!isAuthenticated ? (
           <NavLink className="main-nav-item main-nav-item-signin" to="/login">
-            <i className="fa-solid fa-user" aria-hidden="true"></i>
+            <i className="fa fa-user-circle" aria-hidden="true"></i>
             Sign In
           </NavLink>
         ) : (
           <>
-            <NavLink className="main-nav-item main-nav-item-profile" to="/profile">
-              <span className="main-nav-item-text">{userName || "Profile"}</span>
-              <span className="main-nav-item-icon" aria-hidden="true">
-                <i className="fa-solid fa-user"></i>
-              </span>
+            <NavLink className="main-nav-item" to="/profile">
+              <i className="fa fa-user-circle" aria-hidden="true"></i>
+              {userName || "Profile"}
             </NavLink>
-
-            <NavLink
-              className="main-nav-item main-nav-item-icon"
-              to="/profile"
-              aria-label="Settings"
-              title="Settings"
-            >
-              <i className="fa-solid fa-gear" aria-hidden="true"></i>
-            </NavLink>
-
             <Button
               type="button"
-              className="main-nav-item main-nav-item-button main-nav-item-icon"
+              className="main-nav-item main-nav-item-button"
               onClick={handleLogout}
-              aria-label="Sign out"
-              title="Sign out"
             >
-              <i className="fa-solid fa-power-off" aria-hidden="true"></i>
+              <i className="fa fa-sign-out" aria-hidden="true"></i>
+              Sign Out
             </Button>
           </>
         )}

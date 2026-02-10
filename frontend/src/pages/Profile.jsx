@@ -8,7 +8,7 @@ const ACCOUNTS_PLACEHOLDER = [
   {
     id: "checking",
     title: "Argent Bank Checking (x8349)",
-    amount: "$48,098.43",
+    amount: "$2,082.79",
     description: "Available Balance",
   },
   {
@@ -59,25 +59,28 @@ export default function Profile() {
 
   if (!user) {
     return (
-      <main className="main">
-        <p className="profile-loading">
-          {isLoading ? "Loading..." : "Profile unavailable."}
-        </p>
-      </main>
+      <p className="profile-loading">
+        {isLoading ? "Loading..." : "Profile unavailable."}
+      </p>
     );
   }
 
   return (
-    <main className="main">
+    <>
       {/* Header */}
       <div className="header">
+        <h1>
+          Welcome back
+          <br />
+          {user.firstName} {user.lastName}!
+        </h1>
         {!isEditing ? (
           <Button
             type="button"
             className="edit-button"
             onClick={() => setIsEditing(true)}
           >
-            Edit username
+            Edit Name
           </Button>
         ) : (
           <form className="profile-edit-form" onSubmit={handleSubmit}>
@@ -146,31 +149,15 @@ export default function Profile() {
           </div>
           <div className="account-content-wrapper cta">
             <Button
-              className="transaction-button transaction-button--icon"
+              className="transaction-button"
               type="button"
               onClick={() => alert("Transactions - Phase 2")}
             >
-              <span className="sr-only">View transactions</span>
-              <svg
-                className="chevron-icon"
-                width="20"
-                height="32"
-                viewBox="0 0 20 32"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <path
-                  d="M2 2L18 16L2 30"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                  strokeLinecap="square"
-                />
-              </svg>
+              View transactions
             </Button>
           </div>
         </section>
       ))}
-    </main>
+    </>
   );
 }

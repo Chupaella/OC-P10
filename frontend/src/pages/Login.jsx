@@ -40,40 +40,41 @@ const Login = () => {
   };
 
   return (
-    <section className="login">
-      <h1 className="login-title">Sign in</h1>
-      <form className="login-form" onSubmit={handleSubmit}>
-        <div className="login-fields">
-          <div className="input-wrapper">
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="username"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="input-wrapper">
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
+    <section className="sign-in-content">
+      <i className="fa fa-user-circle sign-in-icon" aria-hidden="true"></i>
+      <h1>Sign In</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="input-wrapper">
+          <label htmlFor="email">Username</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="username"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
         </div>
-        <div className="login-actions">
-          <Button className="sign-in-button" type="submit" disabled={isLoading}>
-            {isLoading ? "Signing in..." : "Sign in"}
-          </Button>
+        <div className="input-wrapper">
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
         </div>
+        <div className="input-remember">
+          <input id="remember-me" type="checkbox" />
+          <label htmlFor="remember-me">Remember me</label>
+        </div>
+        <Button className="sign-in-button" type="submit" disabled={isLoading}>
+          Sign In
+        </Button>
       </form>
       {error && (
         <p role="alert" className="login-error">
